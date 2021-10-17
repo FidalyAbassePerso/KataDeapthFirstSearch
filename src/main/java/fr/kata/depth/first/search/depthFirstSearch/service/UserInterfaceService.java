@@ -9,10 +9,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserInterfaceService {
 	
-	Logger logger = LoggerFactory.getLogger(UserInterfaceService.class);
+	private Logger logger = LoggerFactory.getLogger(UserInterfaceService.class);
 
 	
-	public int demanderValeurAUtilisateur(Scanner sc,String message) {
+	/**
+	 * Demande la saisie d'un entier à l'utilisateur
+	 * @param sc Objet Scanner
+	 * @param message Message affiché à l'utilisateur
+	 * @return valeur Entier saisie par l'utilisateur
+	 */
+	public int demanderValeurEntierAUtilisateur(Scanner sc,String message) {
 		
 		System.out.print(message);
 		

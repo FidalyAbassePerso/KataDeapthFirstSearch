@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import fr.kata.depth.first.search.depthFirstSearch.entity.Coord;
 import fr.kata.depth.first.search.depthFirstSearch.entity.Map;
+import fr.kata.depth.first.search.depthFirstSearch.enumeration.EAttributRecherche;
 import fr.kata.depth.first.search.depthFirstSearch.service.MapService;
 import fr.kata.depth.first.search.depthFirstSearch.service.MazeDeapthSearchService;
 import fr.kata.depth.first.search.depthFirstSearch.service.UserInterfaceService;
@@ -50,7 +51,7 @@ class DepthFirstSearchApplicationTests {
 		int maxRows = -1;
 		
 		while (maxRows <= 0) {
-			maxRows = userInterfaceService.demanderValeurAUtilisateur(sc, "Entrez un nombre de ligne pour la labyrinthe supérieur à 0 : \n");
+			maxRows = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de ligne pour le labyrinthe supérieur à 0 : \n");
 		}
 		
 		assertTrue(maxRows > 0);
@@ -69,7 +70,7 @@ class DepthFirstSearchApplicationTests {
 		Scanner sc= new Scanner(System.in); 
 		int maxRows = -1;
 		while (maxRows <= 0) {
-			maxRows = userInterfaceService.demanderValeurAUtilisateur(sc, "Entrez un nombre de ligne pour la labyrinthe supérieur à 0 : \n");
+			maxRows = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de ligne pour le labyrinthe supérieur à 0 : \n");
 		}
 		
 		in = new ByteArrayInputStream("7".getBytes());
@@ -77,7 +78,7 @@ class DepthFirstSearchApplicationTests {
 		sc= new Scanner(System.in); 
 		int maxCols = -1;
 		while (maxCols <= 0) {
-			 maxCols = userInterfaceService.demanderValeurAUtilisateur(sc, "Entrez un nombre de colonnes pour la labyrinthe supérieur à 0 : \n");
+			 maxCols = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de colonnes pour le labyrinthe supérieur à 0 : \n");
 
 		}
 		
@@ -116,14 +117,14 @@ class DepthFirstSearchApplicationTests {
 		Coord[] sorties = {new Coord(0,2),new Coord(2,2),new Coord(3,1)};
 		Coord depart = new Coord(0,0);
 			
-		while (recherche != 1 && recherche != -1) {
+		while (recherche != EAttributRecherche.ENTREE.getValeur() && recherche != EAttributRecherche.SORTIE.getValeur()) {
 			
-			recherche = userInterfaceService.demanderValeurAUtilisateur(sc, "Tapez 1 pour la position de départ ou -1 pour les positions de sorties : \n");;
+			recherche = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Tapez 1 pour la position de départ ou -1 pour les positions de sorties : \n");;
 			
 		}
 		
 		mapEntity.toString();
-        String typeRecherche = recherche == 1 ? "entrées" : "sorties";
+        String typeRecherche = recherche == EAttributRecherche.ENTREE.getValeur() ? "entrées" : "sorties";
 
 		List<Coord> sortiesTrouve = mazeDeapthSearchService.chercherPositionSortieOuEntree(depart, recherche, new ArrayList<>(), new ArrayList<>(), mapEntity);
 		
@@ -149,25 +150,25 @@ class DepthFirstSearchApplicationTests {
 		
 		Map mapEntity = new Map(4,3);
 		int[][] map = mapEntity.getMap();
-		map[0][2] = -1;
-		map[2][2] = -1;
-		map[3][1] = -1;
+		map[0][2] = -1;// sortie dans la map
+		map[2][2] = -1;// sortie dans la map
+		map[3][1] = -1;// sortie dans la map
 		
-		map[0][0] = 1;
+		map[0][1] = 1; // entree dans la map
 		
 		Coord[] sorties = {new Coord(0,2),new Coord(2,2),new Coord(3,1)};
 		Coord depart = new Coord(0,0);
-		Coord[] entrees = {new Coord(0,0)};
+		Coord[] entrees = {new Coord(0,1)};
 			
-		while (recherche != 1 && recherche != -1) {
+		while (recherche != EAttributRecherche.ENTREE.getValeur() && recherche != EAttributRecherche.SORTIE.getValeur()) {
 			
-			recherche = userInterfaceService.demanderValeurAUtilisateur(sc, "Tapez 1 pour la position de départ ou -1 pour les positions de sorties : \n");;
+			recherche = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Tapez 1 pour la position de départ ou -1 pour les positions de sorties : \n");;
 			
 		}
 		
 		mapEntity.toString();
 
-        String typeRecherche = recherche == 1 ? "entrées" : "sorties";
+        String typeRecherche = recherche == EAttributRecherche.ENTREE.getValeur() ? "entrées" : "sorties";
 
 		List<Coord> entreesTrouve = mazeDeapthSearchService.chercherPositionSortieOuEntree(depart, recherche, new ArrayList<>(), new ArrayList<>(), mapEntity);
 		System.out.println("Voici les positions des "+typeRecherche+" recherchés dans la map : " + entreesTrouve);
@@ -177,6 +178,104 @@ class DepthFirstSearchApplicationTests {
 		
 		logger.info(" Fin Test chercherPositionsEntreeDemande \n");
 
+
+	}
+	
+	@Test
+	void testInitialiserAleatoirementPositionEntree() {
+		
+		logger.info(" Test testInitialiserAleatoirementPositionEntree \n");
+
+		
+		ByteArrayInputStream in = new ByteArrayInputStream("5".getBytes());
+		System.setIn(in);
+		Scanner sc= new Scanner(System.in); 
+		int maxRows = -1;
+		while (maxRows <= 0) {
+			maxRows = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de ligne pour le labyrinthe supérieur à 0 : \n");
+		}
+		
+		in = new ByteArrayInputStream("7".getBytes());
+		System.setIn(in);
+		sc= new Scanner(System.in); 
+		int maxCols = -1;
+		while (maxCols <= 0) {
+			 maxCols = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de colonnes pour le labyrinthe supérieur à 0 : \n");
+
+		}
+		
+		
+		Map map = mapService.creerMap(maxRows, maxCols);
+		
+		boolean isEntreeDansMap = false;
+		
+		for (int i = 0; i < maxRows; i ++) {
+			boolean exit = false;
+			for (int j = 0; j < maxCols; j++) {
+				
+				if (map.getMap()[i][j] == 1) {
+					isEntreeDansMap = true;
+					exit = true;
+					break;
+				}
+			}
+			if (exit) {
+				break;
+			}
+		}
+		
+		assertTrue(isEntreeDansMap);
+		
+		logger.info(" Fin Test testInitialiserAleatoirementPositionEntree \n");
+
+	}
+	
+	@Test
+	void testInitialiserAleatoirementPositionSortie() {
+		
+		logger.info(" Test testInitialiserAleatoirementPositionSortie \n");
+
+		
+		ByteArrayInputStream in = new ByteArrayInputStream("5".getBytes());
+		System.setIn(in);
+		Scanner sc= new Scanner(System.in); 
+		int maxRows = -1;
+		while (maxRows <= 0) {
+			maxRows = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de ligne pour le labyrinthe supérieur à 0 : \n");
+		}
+		
+		in = new ByteArrayInputStream("7".getBytes());
+		System.setIn(in);
+		sc= new Scanner(System.in); 
+		int maxCols = -1;
+		while (maxCols <= 0) {
+			 maxCols = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de colonnes pour le labyrinthe supérieur à 0 : \n");
+
+		}
+		
+		
+		Map map = mapService.creerMap(maxRows, maxCols);
+		
+		boolean isSortieDansMap = false;
+		
+		for (int i = 0; i < maxRows; i ++) {
+			boolean exit = false;
+			for (int j = 0; j < maxCols; j++) {
+				
+				if (map.getMap()[i][j] == -1) {
+					isSortieDansMap = true;
+					exit = true;
+					break;
+				}
+			}
+			if (exit) {
+				break;
+			}
+		}
+		
+		assertTrue(isSortieDansMap);
+		
+		logger.info(" Fin Test testInitialiserAleatoirementPositionSortie \n");
 
 	}
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import fr.kata.depth.first.search.depthFirstSearch.entity.Coord;
 import fr.kata.depth.first.search.depthFirstSearch.entity.Map;
+import fr.kata.depth.first.search.depthFirstSearch.enumeration.EAttributRecherche;
 import fr.kata.depth.first.search.depthFirstSearch.service.MapService;
 import fr.kata.depth.first.search.depthFirstSearch.service.MazeDeapthSearchService;
 import fr.kata.depth.first.search.depthFirstSearch.service.UserInterfaceService;
@@ -27,19 +28,19 @@ import fr.kata.depth.first.search.depthFirstSearch.service.UserInterfaceService;
 @ComponentScan(basePackages = {"fr.kata.depth.first.search.depthFirstSearch","fr.kata.depth.first.search.depthFirstSearch.service.impl"} )
 public class DepthFirstSearchApplication {
 	
-	public static int MAX_ROW = -1;
+	private static int MAX_ROW = -1;
 	
-	public static int MAX_COL = -1;
+	private static int MAX_COL = -1;
 		
 	
-	static MapService mapService;
+	private static MapService mapService;
 	
 	
-	static MazeDeapthSearchService mazeDeapthSearchService;
+	private static MazeDeapthSearchService mazeDeapthSearchService;
 	
-	static UserInterfaceService userInterfaceService;
+	private static UserInterfaceService userInterfaceService;
 	
-    static ApplicationContext context;
+    private static ApplicationContext context;
 
 	
 
@@ -47,6 +48,7 @@ public class DepthFirstSearchApplication {
 		
 		context = SpringApplication.run(DepthFirstSearchApplication.class, args);
 		
+        //on instancie nos services en s'appuyant sur l'ApplicationContext car à ce moment les composants ne sont pas tous chargés
 		userInterfaceService = (UserInterfaceService) context.getBean("userInterfaceService");
 
 		
@@ -54,31 +56,31 @@ public class DepthFirstSearchApplication {
 		
 		while (MAX_ROW <= 0) {
 			
-			MAX_ROW = userInterfaceService.demanderValeurAUtilisateur(sc, "Entrez un nombre de ligne pour la labyrinthe supérieur à 0 : \n");
+			MAX_ROW = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de ligne pour le labyrinthe supérieur à 0 : \n");
 		}
 		
 						
 		while (MAX_COL <= 0) {
 			
-			MAX_COL = userInterfaceService.demanderValeurAUtilisateur(sc, "Entrez un nombre de colonnes pour la labyrinthe supérieur à 0 : \n");
+			MAX_COL = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Entrez un nombre de colonnes pour le labyrinthe supérieur à 0 : \n");
 		}
 		
 		
 		System.out.print("Souhaitez-vous connaître la position de depart ou les positions de sorties ? \n");
 		int recherche = 0;
 		
-		while (recherche != 1 && recherche != -1) {
+		while (recherche != EAttributRecherche.ENTREE.getValeur() && recherche != EAttributRecherche.SORTIE.getValeur()) {
 			
-			recherche = userInterfaceService.demanderValeurAUtilisateur(sc, "Tapez 1 pour la position de départ ou -1 pour les positions de sorties : \n");;
+			recherche = userInterfaceService.demanderValeurEntierAUtilisateur(sc, "Tapez 1 pour la position de départ ou -1 pour les positions de sorties : \n");;
 			
 		}
 		
 		
-        
+        //on instancie nos services en s'appuyant sur l'ApplicationContext car à ce moment les composants ne sont pas tous chargés
         mapService = (MapService) context.getBean("mapService");
         mazeDeapthSearchService = (MazeDeapthSearchService) context.getBean("mazeDeapthSearchService");
         
-        String typeRecherche = recherche == 1 ? "entrées" : "sorties";
+        String typeRecherche = recherche == EAttributRecherche.ENTREE.getValeur() ? "entrées" : "sorties";
 
 		Map map = mapService.creerMap(MAX_ROW, MAX_COL);
 		

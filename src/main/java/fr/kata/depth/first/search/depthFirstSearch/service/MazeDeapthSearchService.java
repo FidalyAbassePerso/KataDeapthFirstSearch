@@ -10,9 +10,6 @@ import fr.kata.depth.first.search.depthFirstSearch.entity.Map;
 
 @Service
 public class MazeDeapthSearchService {
-	
-	@Autowired
-	MapService mapService;
 
 	
 	/** Recherche de façon recursive avec l'algorithme de parcours en profondeur les sorties/entrée dans la map
@@ -33,9 +30,6 @@ public class MazeDeapthSearchService {
 		
 		coordMarquees.add(c);
 		
-		if (map.faitPartieDeLaMap(c) && map.getMap()[c.getX()][c.getY()]==recherche && !positionsRecherche.contains(c)) {
-			positionsRecherche.add(c);
-		}
 		
 		for (Coord voisin : c.getVoisinsAdjacent()) {
 

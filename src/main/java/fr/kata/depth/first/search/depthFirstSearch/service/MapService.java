@@ -12,9 +12,14 @@ import fr.kata.depth.first.search.depthFirstSearch.entity.Map;
 @Service
 public class MapService{
 	
-	Logger logger = LoggerFactory.getLogger(MapService.class);
+	private Logger logger = LoggerFactory.getLogger(MapService.class);
 
-	
+	/**
+	 * Permet de créer un objet Map représentant un labyrinthe
+	 * @param maxRows nombre max de lignes dans le tableau
+	 * @param maxCols nombre max de colonnes dans le tableau
+	 * @return un objet Map représentant un labyrinthe
+	 */
 	public Map creerMap(int maxRows, int maxCols) {
 		
 		logger.info("############## On initialise la map avec les valeurs ligne,colonne : "+maxRows+","+maxCols+" ##############");
@@ -46,6 +51,13 @@ public class MapService{
 		
 	}
 	
+	/**
+	 * Initialise positions aléatoire des sorties
+	 * @param maxRows Nombre max de ligne le tableau
+	 * @param maxCols Nombre max de colonnes dans le tableau
+	 * @param map tableau représentant le labyrinthe
+	 * @return tableau de la map à jour
+	 */
 	private int[][] initialiserPositionAleatoireDesSorties(int maxRows,int maxCols,int[][] map) {
 		
 		Random rand = new Random(); 
@@ -73,6 +85,13 @@ public class MapService{
 		return map;
 	}
 	
+	/**
+	 * Initialise la position aléatoire de depart
+	 * @param maxRows Nombre max de ligne le tableau
+	 * @param maxCols Nombre max de colonnes dans le tableau
+	 * @param mapEntity map représentant le labyrinthe
+	 * @return Map à jour
+	 */
 	private Map initialiserPositionAleatoireJoueur(int maxRows,int maxCols,Map mapEntity){
 		
 		Random rand = new Random(); 
