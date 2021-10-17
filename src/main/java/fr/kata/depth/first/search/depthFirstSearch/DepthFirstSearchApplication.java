@@ -48,6 +48,10 @@ public class DepthFirstSearchApplication {
 		
 		context = SpringApplication.run(DepthFirstSearchApplication.class, args);
 		
+		System.out.println("Bienvenue dans le jeu du labyrinthe , "
+				+ "vous allez paramétrer le labyrinthe et le programme \n "
+				+ "s'occupera de trouver automatiquement les entrées et "
+				+ "sorties présents dans le labyrinthe\n");
         //on instancie nos services en s'appuyant sur l'ApplicationContext car à ce moment les composants ne sont pas tous chargés
 		userInterfaceService = (UserInterfaceService) context.getBean("userInterfaceService");
 
